@@ -70,3 +70,4 @@ Then open `http://localhost:8000`. Do not open HTML files directly with `file://
 
 ## Viva concepts
 Cloud hosting serves static frontend files; Supabase provides managed authentication, PostgreSQL database and object storage. RLS enforces per-user permissions at the backend. Signed URLs provide time-limited access to private PDFs.
+
