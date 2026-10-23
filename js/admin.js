@@ -1,11 +1,22 @@
 (async () => {
+  // 1. Grab the loading text and the hidden content container
+  const loadingEl = App.$("#admin-loading");
+  const contentEl = App.$("#admin-content");
+
   try {
     const user = await App.requireUser(); if (!user) return;
     const p = await App.profile(user.id);
+    
     if (p.role !== "admin") { location.href = "dashboard.html"; return; }
+    
+    // 2. Role is verified! Hide the loading text and show the admin controls
+    if (loadingEl) loadingEl.hidden = true;
+    if (contentEl) contentEl.hidden = false;
+
     const render = async () => {
       const notes = await App.loadNotes();
       App.$("#notes-list").innerHTML = notes.map(n => `<article class="card admin-row"><div><strong>${App.escapeHTML(n.title)}</strong><div class="note-meta">${App.escapeHTML(n.subjectName)} · ${App.escapeHTML(n.branch)} · Sem ${n.semester} · ${App.formatDate(n.created_at)}</div></div><div class="note-actions"><a class="button small" href="note.html?id=${n.id}">View</a><button class="button small danger" data-delete="${n.id}" type="button">Delete</button></div></article>`).join("") || "<p class='muted'>No notes uploaded yet.</p>";
+      
       App.$("#notes-list").querySelectorAll("[data-delete]").forEach(btn => btn.addEventListener("click", async () => {
         const n = notes.find(x => String(x.id) === btn.dataset.delete);
         if (!n || !confirm(`Delete “${n.title}” and its PDF?`)) return;
@@ -17,7 +28,9 @@
         await render();
       }));
     };
+    
     await render();
+    
     App.$("#subject-form").addEventListener("submit", async event => {
       event.preventDefault();
       const f = event.currentTarget;
@@ -25,5 +38,10 @@
       if (error) return App.message(error.message,true,"#subject-message");
       App.message("Subject added.",false,"#subject-message"); f.reset(); f.branch.value="ENTC";
     });
-  } catch (error) { App.message(error.message || "Could not load admin dashboard.",true); }
+    
+  } catch (error) { 
+    // 3. If there is an error, hide the loading text and show the error
+    if (loadingEl) loadingEl.hidden = true;
+    App.message(error.message || "Could not load admin dashboard.",true); 
+  }
 })();
