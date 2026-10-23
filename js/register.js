@@ -1,11 +1,19 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  // FIX 1: If user is already logged in, bounce them directly to dashboard
+// 1. Aggressively listen for any authentication state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    window.location.replace('dashboard.html');
+  }
+});
+
+// 2. Beat the browser's "Back" button cache (BFCache)
+window.addEventListener('pageshow', async () => {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
     window.location.replace('dashboard.html');
-    return;
   }
+});
 
+document.addEventListener('DOMContentLoaded', () => {
   const registerForm = document.getElementById('register-form');
   const messageEl = document.getElementById('message');
 
@@ -19,22 +27,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       messageEl.textContent = 'Creating account...';
       messageEl.style.color = 'inherit';
 
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: {
-            full_name: fullName
-          }
+          data: { full_name: fullName }
         }
       });
 
       if (error) {
         messageEl.textContent = error.message;
         messageEl.style.color = 'var(--danger-color, red)';
-      } else {
-        // FIX 2: Use replace() so the register page isn't saved in the back button history
-        window.location.replace('dashboard.html');
       }
     });
   }

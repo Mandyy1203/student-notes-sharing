@@ -1,11 +1,19 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  // FIX 1: If user is already logged in, bounce them directly to dashboard
+// 1. Aggressively listen for any authentication state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    window.location.replace('dashboard.html');
+  }
+});
+
+// 2. Beat the browser's "Back" button cache (BFCache)
+window.addEventListener('pageshow', async () => {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
     window.location.replace('dashboard.html');
-    return;
   }
+});
 
+document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form');
   const messageEl = document.getElementById('message');
 
@@ -18,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       messageEl.textContent = 'Logging in...';
       messageEl.style.color = 'inherit';
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -26,10 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (error) {
         messageEl.textContent = error.message;
         messageEl.style.color = 'var(--danger-color, red)';
-      } else {
-        // FIX 2: Use replace() so the login page isn't saved in the back button history
-        window.location.replace('dashboard.html');
       }
+      // Note: We don't need a redirect here anymore because the onAuthStateChange listener at the top will automatically catch the success and redirect!
     });
   }
 });
