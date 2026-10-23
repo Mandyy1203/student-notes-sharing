@@ -1,42 +1,30 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const client = window.supabaseClient || window.supabase;
-
-  // 1. If already logged in, replace login.html in history with dashboard.html
-  const { data: { session } } = await client.auth.getSession();
+// Check if user is already logged in (including when hitting Back button)
+window.addEventListener("pageshow", async (e) => {
+  const { data: { session } } = await db.auth.getSession();
   if (session) {
-    window.location.replace('dashboard.html');
-    return;
+    const navType = performance.getEntriesByType("navigation")[0]?.type;
+    if (e.persisted || navType === "back_forward") {
+      window.history.back(); // Skip backward over login page just like Gemini
+    } else {
+      window.location.replace("dashboard.html");
+    }
   }
+});
 
-  const loginForm = document.getElementById('login-form');
-  const messageEl = document.getElementById('message');
+App.$("#login-form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  App.message("Logging in...");
+  
+  const f = new FormData(e.target);
+  const { error } = await db.auth.signInWithPassword({
+    email: f.get("email").trim(),
+    password: f.get("password")
+  });
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const email = loginForm.email.value.trim();
-      const password = loginForm.password.value;
-
-      if (messageEl) {
-        messageEl.textContent = 'Logging in...';
-        messageEl.className = 'message';
-      }
-
-      const { error } = await client.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        if (messageEl) {
-          messageEl.textContent = error.message;
-          messageEl.className = 'message error';
-        }
-      } else {
-        // 2. Replace login.html in history so Back button skips it!
-        window.location.replace('dashboard.html');
-      }
-    });
+  if (error) {
+    App.message(error.message, true);
+  } else {
+    // Replaces login.html in browser history so Back button skips it!
+    window.location.replace("dashboard.html");
   }
 });

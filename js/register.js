@@ -1,54 +1,30 @@
-const isBackButton = 
-  (performance.getEntriesByType("navigation")[0]?.type === "back_forward") || 
-  (window.performance && window.performance.navigation && window.performance.navigation.type === 2);
-
-supabase.auth.onAuthStateChange((event, session) => {
+// Check if user is already logged in (including when hitting Back button)
+window.addEventListener("pageshow", async (e) => {
+  const { data: { session } } = await db.auth.getSession();
   if (session) {
-    if (event === 'SIGNED_IN') {
-      window.location.replace('dashboard.html');
-    } else if (isBackButton) {
-      window.history.back();
+    const navType = performance.getEntriesByType("navigation")[0]?.type;
+    if (e.persisted || navType === "back_forward") {
+      window.history.back(); // Skip backward over login page just like Gemini
     } else {
-      window.location.replace('dashboard.html');
+      window.location.replace("dashboard.html");
     }
   }
 });
 
-window.addEventListener('pageshow', async (e) => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    if (e.persisted || isBackButton) {
-      window.history.back();
-    } else {
-      window.location.replace('dashboard.html');
-    }
-  }
-});
+App.$("#login-form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  App.message("Logging in...");
+  
+  const f = new FormData(e.target);
+  const { error } = await db.auth.signInWithPassword({
+    email: f.get("email").trim(),
+    password: f.get("password")
+  });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const registerForm = document.getElementById('register-form');
-  const messageEl = document.getElementById('message');
-
-  if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const fullName = registerForm.full_name.value;
-      const email = registerForm.email.value;
-      const password = registerForm.password.value;
-      
-      messageEl.textContent = 'Creating account...';
-      messageEl.style.color = 'inherit';
-
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { full_name: fullName } }
-      });
-
-      if (error) {
-        messageEl.textContent = error.message;
-        messageEl.style.color = 'var(--danger-color, red)';
-      }
-    });
+  if (error) {
+    App.message(error.message, true);
+  } else {
+    // Replaces login.html in browser history so Back button skips it!
+    window.location.replace("dashboard.html");
   }
 });
