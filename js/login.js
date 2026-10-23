@@ -1,25 +1,29 @@
-// Detect if the user arrived here by clicking the browser's "Back" button
 const isBackButton = 
   (performance.getEntriesByType("navigation")[0]?.type === "back_forward") || 
   (window.performance && window.performance.navigation && window.performance.navigation.type === 2);
 
-// 1. Listen for authentication state
 supabase.auth.onAuthStateChange((event, session) => {
   if (session) {
-    if (isBackButton) {
-      window.history.back(); // Skip backward to the homepage or Google
-    } else {
+    // If you just clicked "Log in", always go straight to the dashboard
+    if (event === 'SIGNED_IN') {
+      window.location.replace('dashboard.html');
+    } 
+    // If you were already logged in and hit the back button to get here, skip backward
+    else if (isBackButton) {
+      window.history.back();
+    } 
+    // If you directly typed the login URL while already logged in
+    else {
       window.location.replace('dashboard.html');
     }
   }
 });
 
-// 2. Handle the Browser's Back-Forward Cache (BFCache)
-window.addEventListener('pageshow', async (event) => {
+window.addEventListener('pageshow', async (e) => {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
-    if (event.persisted || isBackButton) {
-      window.history.back(); 
+    if (e.persisted || isBackButton) {
+      window.history.back();
     } else {
       window.location.replace('dashboard.html');
     }
