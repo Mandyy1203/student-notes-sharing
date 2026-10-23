@@ -1,1 +1,83 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Upload notes | Student Notes</title><link rel="stylesheet" href="css/style.css"></head><body><header class="topbar"><a class="brand" href="index.html">📚 Student Notes</a><nav><a href="dashboard.html">Dashboard</a><a href="browse.html">Browse notes</a></nav></header><main class="container narrow"><div class="page-heading"><div><div class="eyebrow">CONTRIBUTE</div><h1>Upload notes</h1><p class="muted">Share a clear, useful PDF with your classmates.</p></div></div><form id="upload-form" class="card form-card"><label>Note title<input name="title" required maxlength="120" placeholder="e.g. Unit 1 — Control Systems"></label><label>Description<textarea name="description" maxlength="500" rows="3" placeholder="What will students learn from this file?"></textarea></label><label>Subject<select name="subject_id" id="subject" required><option value="">Loading subjects…</option></select></label><div class="two-col"><label>Branch<select name="branch" required><option>ENTC</option><option>Computer</option><option>IT</option><option>Electrical</option><option>Mechanical</option><option>Civil</option><option>Other</option></select></label><label>Semester<select name="semester" required><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></label></div><label>PDF file<input name="file" type="file" accept="application/pdf,.pdf" required><small>PDF only, maximum 10 MB.</small></label><button class="button full" type="submit">Upload PDF</button><div id="message" class="message" role="status"></div></form></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabaseClient.js"></script><script src="js/common.js"></script><script src="js/upload.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload notes | Student Notes</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">📚 Student Notes</a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="browse.html">Browse notes</a>
+    </nav>
+  </header>
+
+  <main class="container narrow">
+    <div class="page-heading">
+      <div>
+        <div class="eyebrow">CONTRIBUTE</div>
+        <h1>Upload notes</h1>
+        <p class="muted">Share a clear, useful PDF with your classmates.</p>
+      </div>
+    </div>
+
+    <form id="upload-form" class="card form-card">
+      <label>Note title
+        <input name="title" required maxlength="120" placeholder="e.g. Unit 1 — Control Systems">
+      </label>
+      
+      <label>Description
+        <textarea name="description" maxlength="500" rows="3" placeholder="What will students learn from this file?"></textarea>
+      </label>
+      
+      <label>Subject name
+        <input type="text" name="subject_name" id="subject_name" placeholder="e.g. Data Structures" required>
+      </label>
+      
+      <div class="two-col">
+        <label>Branch
+          <select name="branch" required>
+            <option>ENTC</option>
+            <option>Computer</option>
+            <option>IT</option>
+            <option>Electrical</option>
+            <option>Mechanical</option>
+            <option>Civil</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Semester
+          <select name="semester" required>
+            <option value="">Select</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+          </select>
+        </label>
+      </div>
+      
+      <label>PDF file
+        <input name="file" type="file" accept="application/pdf,.pdf" required>
+        <small>PDF only, maximum 10 MB.</small>
+      </label>
+      
+      <button class="button full" type="submit">Upload PDF</button>
+      <div id="message" class="message" role="status"></div>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>
