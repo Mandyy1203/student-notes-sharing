@@ -1,12 +1,44 @@
-(function () {
-  if (!window.supabase || !window.APP_CONFIG) {
-    console.error("Supabase client library or config is missing.");
+document.addEventListener('DOMContentLoaded', async () => {
+  const client = window.supabaseClient || window.supabase;
+
+  const { data: { session } } = await client.auth.getSession();
+  if (session) {
+    window.location.replace('dashboard.html');
     return;
   }
-  const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.APP_CONFIG;
-  if (!SUPABASE_URL || SUPABASE_URL.includes("YOUR_PROJECT_REF") ||
-      !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")) {
-    console.warn("Set the Supabase URL and publishable/anon key in js/config.js.");
+
+  const registerForm = document.getElementById('register-form');
+  const messageEl = document.getElementById('message');
+
+  if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const fullName = registerForm.full_name ? registerForm.full_name.value.trim() : '';
+      const email = registerForm.email.value.trim();
+      const password = registerForm.password.value;
+
+      if (messageEl) {
+        messageEl.textContent = 'Creating account...';
+        messageEl.className = 'message';
+      }
+
+      const { error } = await client.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName }
+        }
+      });
+
+      if (error) {
+        if (messageEl) {
+          messageEl.textContent = error.message;
+          messageEl.className = 'message error';
+        }
+      } else {
+        window.location.replace('dashboard.html');
+      }
+    });
   }
-  window.db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-})();
+});
