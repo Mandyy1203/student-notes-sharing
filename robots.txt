@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /admin.html
+Disallow: /upload.html
+
+Sitemap: https://mandyy1203.github.io/student-notes-sharing/sitemap.xml
