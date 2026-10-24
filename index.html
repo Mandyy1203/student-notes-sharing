@@ -8,14 +8,13 @@
   <title>Student Notes Sharing System | SPPU Engineering Study Material</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7H6SBLXHRG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7H6SBLXHRG');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7H6SBLXHRG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7H6SBLXHRG');
+  </script>
 
   <meta name="google-site-verification" content="elorlh8GCZhEt2VfgaSmLZwCdWL5HTSesByXrA7GRyQ" />
   <meta name="description" content="A secure, student-driven platform to share and download SPPU engineering notes, previous year questions (PYQs), and lab manuals for ENTC, Computer, and IT branches.">
@@ -33,20 +32,21 @@
   </header>
 
   <main class="container">
-    <div class="hero" style="text-align: center; padding: 4rem 1rem;">
+    <div class="hero" style="text-align: center; padding: 4.5rem 1rem 3.5rem 1rem;">
       <div class="eyebrow">OPEN ACADEMIC RESOURCE</div>
-      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Share and discover <br>engineering study materials.</h1>
-      <p class="muted" style="max-width: 600px; margin: 0 auto 2rem auto; font-size: 1.1rem;">
+      <h1 style="font-size: 2.75rem; margin-bottom: 1rem;">Share and discover <br>engineering study materials.</h1>
+      <p class="muted" style="max-width: 600px; margin: 0 auto 2.25rem auto; font-size: 1.1rem;">
         A community-driven platform for SPPU students to organize, upload, and download semester-wise PDF notes securely.
       </p>
-      <div style="display: flex; gap: 1rem; justify-content: center;">
-        <a class="button" href="register.html">Get Started</a>
+      <div style="display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap;">
+        <a class="button" href="register.html">Get Started →</a>
+        <a class="button secondary" href="browse.html">Browse Notes</a>
       </div>
     </div>
 
-    <div class="features card" style="margin-top: 2rem;">
+    <div class="features card" style="margin-top: 1rem;">
       <h2>Built for Students</h2>
-      <ul style="line-height: 1.8; margin-top: 1rem;" class="muted">
+      <ul style="line-height: 1.9; margin-top: 0.75rem;" class="muted">
         <li><strong>Semester-wise filtering:</strong> Easily find exact materials for your branch (ENTC, Comp, IT) and semester.</li>
         <li><strong>Secure previews:</strong> Built-in 60-second signed URLs protect shared PDFs from unauthorized scraping.</li>
         <li><strong>High quality:</strong> Community-moderated uploads ensure clear, readable study materials.</li>
@@ -54,10 +54,15 @@
     </div>
   </main>
 
-    <footer style="text-align: center; padding: 2rem; margin-top: 4rem; border-top: 1px solid #eaeaea;" class="muted">
+  <footer style="text-align: center; padding: 2rem; margin-top: 4rem;" class="muted">
     <div style="margin-bottom: 0.5rem;">Student Notes Sharing System · Academic project</div>
     <a href="terms.html" style="color: inherit; text-decoration: underline; margin-right: 1rem;">Terms of Service</a>
     <a href="privacy.html" style="color: inherit; text-decoration: underline;">Privacy Policy</a>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/common.js"></script>
 </body>
 </html>

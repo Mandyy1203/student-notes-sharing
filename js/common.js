@@ -96,7 +96,6 @@ window.App = (() => {
   }
 
   async function loadNotes() {
-    // Select * alongside subjects(name) so it works whether your table uses subject_name or subject_id
     const { data, error } = await db
       .from("notes")
       .select("*, subjects(name)")
@@ -114,7 +113,8 @@ window.App = (() => {
     const btn = $("#logout");
     if (btn) btn.addEventListener("click", signOut);
   }
-  // Automatically update topbar Log in / Sign up links if user is already signed in
+
+  // Automatically swap "Log in" / "Sign up" links to "Dashboard" / "Browse" when user is already logged in
   if (window.db?.auth) {
     db.auth.getSession().then(({ data }) => {
       if (data?.session) {
@@ -126,9 +126,14 @@ window.App = (() => {
           el.textContent = "Browse Notes";
           el.href = "browse.html";
         });
+        document.querySelectorAll('.hero a[href="register.html"]').forEach(el => {
+          el.textContent = "Go to Dashboard →";
+          el.href = "dashboard.html";
+        });
       }
     });
   }
+
   return {
     $,
     message,
