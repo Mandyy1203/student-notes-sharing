@@ -1,4 +1,23 @@
-<main class="container">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard | Student Notes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">📚 Student Notes</a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="browse.html">Browse</a>
+      <a href="upload.html">Upload</a>
+    </nav>
+  </header>
+
+  <main class="container">
     <div class="page-heading">
       <div>
         <div class="eyebrow">MODERATION</div>
@@ -7,14 +26,11 @@
       </div>
     </div>
 
-    <!-- NEW: Loading text -->
     <p id="admin-loading" class="muted">Checking administrator access…</p>
     <div id="message" class="message"></div>
 
-    <!-- NEW: Wrap the rest inside this hidden div -->
     <div id="admin-content" hidden>
-      
-      <section class="card form-card">
+      <section class="card form-card" style="margin-bottom: 2.5rem;">
         <h2>Add a subject</h2>
         <form id="subject-form">
           <div class="two-col">
@@ -33,11 +49,18 @@
         </form>
         <div id="subject-message" class="message"></div>
       </section>
-      
+
       <section>
         <h2>Uploaded notes</h2>
         <div id="notes-list" class="admin-list"></div>
       </section>
-
     </div>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
